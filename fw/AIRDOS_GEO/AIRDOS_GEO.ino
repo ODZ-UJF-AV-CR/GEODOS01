@@ -113,7 +113,7 @@ TX1/INT1 (D 11) PD3 17|        |24 PC2 (D 18) TCK
 #define SDpower1  1    // PB1
 #define SDpower2  2    // PB2
 #define SDpower3  3    // PB3
-#define SS        22//4    // PB4
+#define SS        4    // PB4
 #define MOSI      5    // PB5
 #define MISO      6    // PB6
 #define SCK       7    // PB7
@@ -132,11 +132,11 @@ uint16_t u_sensor, maximum;
 Adafruit_MPL3115A2 sensor = Adafruit_MPL3115A2();
 uint16_t hits;
 
-// 1290c00806a20091c057a000a0000036
-String crystal = "NaI(Tl)-D16x30";
-static const PROGMEM u1_t NWKSKEY[16] = {0x3F,0x76,0xD6,0xEB,0xFC,0x9A,0x42,0x2A,0xD9,0x06,0x81,0x59,0x8C,0xAE,0x3E,0x60};
-static const u1_t PROGMEM APPSKEY[16] = {0xD8,0x5F,0x50,0x3E,0x28,0xC2,0xF6,0x61,0xE2,0x81,0x10,0xF5,0xFF,0x90,0x02,0x2B};
-static const u4_t DEVADDR = 0x260B4150; 
+// 1290c00806a20090e413a000a000007c
+String crystal = "NaI(Tl)-D17x40";
+static const PROGMEM u1_t NWKSKEY[16] = {0x5E,0x20,0x13,0x24,0xE7,0x43,0x2E,0xDE,0x69,0x9E,0xA5,0xB4,0x4C,0x52,0xA3,0xD9};
+static const u1_t PROGMEM APPSKEY[16] = {0x08,0x51,0x2D,0x61,0x85,0x6E,0x4B,0x1E,0xE7,0x87,0x0E,0x13,0x9A,0x6B,0x1F,0xF7};
+static const u4_t DEVADDR = 0x260BB491; 
 
 /*
 // 1290c00806a200908013a000a00000dd
@@ -462,8 +462,8 @@ void set_power(uint8_t state)
       digitalWrite(SS, LOW);  
       break;
     case SD_OFF: // Do not power off
-      //digitalWrite(SS, HIGH);  
-      //PORTB &= 0b11110001;
+      digitalWrite(SS, HIGH);  
+      PORTB &= 0b11110001;
       break;
     case GPS_ON:
       Serial1.begin(38400);
