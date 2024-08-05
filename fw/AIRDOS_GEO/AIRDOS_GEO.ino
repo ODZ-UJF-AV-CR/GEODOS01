@@ -1,23 +1,3 @@
-#define DEBUG // Please comment it if you are not debugging
-String FWversion = "GEO_1024_v4"; // Output data format (multiple files)
-
-// LTO cells 
-// https://files.gwl.eu/inc/_doc/attach/StoItem/7015/GWL_LTO1865_Rechargeable.pdf
-
-#define RANGE 25   // histogram range
-#define NOISE  6  // first channel for reporting flux to IoT
-#define EVENTS 500 // maximal number of recorded events
-#define GPSerror 700000 // number of cycles for waitig for GPS in case of GPS error 
-#define MSG_NO 20 // number of recorded NMEA messages
-#define GPSdelay 24   // number of sending telemetry per one GPS aquisition (12 hour)
-//#define TELEdelay 1   // 
-#define TELEdelay 200   // number of measurements between sending telemetry (40 minutes)
-                      
-#define MAXFILESIZE 28000000 // in bytes, 4 MB per day, 28 MB per week, 122 MB per month
-#define MAXCOUNT 53000 // in measurement cycles, 7 479 per day, 52353 per week, 224 369 per month
-#define MAXFILES 100 // maximal number of files on SD card
-
-
 // Compiled with: Arduino 1.8.13
 
 /*
@@ -30,7 +10,12 @@ PD1     TX
 RESET#  through 50M capacitor to DTR#
 
 SDcard
-------
+------    for(uint8_t j=0; j<32; j++)
+    {
+      buffer[j] = analogRead(A0);
+      delayMicroseconds(10);     
+    };
+
 DAT3   SS   4 B4
 CMD    MOSI 5 B5
 DAT0   MISO 6 B6
@@ -93,19 +78,6 @@ TX1/INT1 (D 11) PD3 17|        |24 PC2 (D 18) TCK
                       +--------+
 */
 
-#include <SD.h>             // Revised version from MightyCore
-#include "wiring_private.h"
-#include <Wire.h>           
-#include <Adafruit_MPL3115A2.h>
-#include <avr/wdt.h>
-#include "src/TinyGPS++/TinyGPS++.h"
-
-#include <stdio.h>
-#include <stdint.h>
-
-#include "src/basicmac/basicmac.h"  // LoRa IoT
-#include "src/basicmac/hal/hal.h"
-#include <SPI.h>
 
 #define LED_red   23   // PC7
 #define RESET     0    // PB0
@@ -271,7 +243,7 @@ const lmic_pinmap lmic_pins = {
 //  14  | A14     | A9      | 1x
 //  15  | A15     | A9      | 1x
 #define PIN 0
-uint8_t analog_reference = INTERNAL2V56; // DEFAULT, INTERNAL, INTERNAL1V1, INTERNAL2V56, or EXTERNAL
+uint8_t analog_reference = EXTERNAL; //INTERNAL2V56; // DEFAULT, INTERNAL, INTERNAL1V1, INTERNAL2V56, or EXTERNAL
 
 uint8_t bcdToDec(uint8_t b)
 {
